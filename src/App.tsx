@@ -1,46 +1,24 @@
-import { AuthProvider, useAuth } from '@/hooks/useAuth';
-
-function SignInGate() {
-  const { isAuthenticated, isLoading, login, error } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-sm text-gray-600">Loading…</p>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <h1 className="text-xl font-semibold">Sign in</h1>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <button
-          type="button"
-          onClick={login}
-          className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-        >
-          Sign in with UiPath
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <main className="min-h-screen p-8">
-      <h1 className="text-2xl font-semibold">UiPath Coded Web App</h1>
-      <p className="mt-2 text-sm text-gray-600">
-        Replace this placeholder with your application UI.
-      </p>
-    </main>
-  );
-}
+import { useAuth } from '@/hooks/useAuth';
+import { LoginScreen } from '@/components/LoginScreen';
+import { HomePage } from '@/pages/HomePage';
 
 export function App() {
-  return (
-    <AuthProvider>
-      <SignInGate />
-    </AuthProvider>
-  );
+    const { isAuthenticated, isLoading } = useAuth();
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-background flex items-center justify-center">
+                <div className="flex items-center space-x-3">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+                    <span className="text-muted-foreground font-medium">Initializing UiPath SDK...</span>
+                </div>
+            </div>
+        );
+    }
+
+    if (!isAuthenticated) {
+        return <LoginScreen />;
+    }
+
+    return <HomePage />;
 }

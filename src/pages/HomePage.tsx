@@ -122,4 +122,5 @@ export function HomePage() {
             <Toaster richColors closeButton />
         </div>
     );
-}
+}
+
